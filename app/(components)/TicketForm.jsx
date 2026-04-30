@@ -1,8 +1,9 @@
 "use client";
 import React, { useState } from "react";
-import Router from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const TicketForm = () => {
+  const router = useRouter();
   const handleChange = (e) => {
     const value = e.target.value;
     const name = e.target.name;
@@ -13,8 +14,22 @@ const TicketForm = () => {
     }));
   };
 
-  const handleSubmit = () => {
-    console.log("Submitted");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const res = await fetch("/api/Tickets", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ formData }),
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to create Ticket.");
+    }
+
+    router.refresh();
+    router.push("/");
   };
 
   const startingTicketData = {
@@ -127,6 +142,15 @@ const TicketForm = () => {
           max="100"
           onChange={handleChange}
         ></input>
+
+        <label>Status</label>
+        <select name="status" value={formData.status} onChange={handleChange}>
+          <option value="not started">Not Started</option>
+          <option value="started">Started</option>
+          <option value="done">Done</option>
+        </select>
+
+        <input type="submit" className="btn" value="Create Ticket" />
       </form>
     </div>
   );
