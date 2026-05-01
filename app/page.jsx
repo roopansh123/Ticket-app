@@ -2,6 +2,8 @@ import React from "react";
 import TicketCard from "./(components)/TicketCard";
 import { getTickets } from "./lib/tickets";
 
+export const dynamic = "force-dynamic";
+
 const Dashboard = async () => {
   let tickets = [];
 

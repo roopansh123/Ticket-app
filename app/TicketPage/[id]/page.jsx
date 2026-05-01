@@ -2,6 +2,8 @@ import TicketForm from "@/app/(components)/TicketForm";
 import { getTicketById } from "@/app/lib/tickets";
 import React from "react";
 
+export const dynamic = "force-dynamic";
+
 const TicketPage = async ({ params }) => {
   const { id } = await params;
   const EDITMODE = id !== "New";
