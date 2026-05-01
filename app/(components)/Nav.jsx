@@ -23,7 +23,7 @@ const Nav = () => {
       </div>
 
       <div className="nav-right">
-        <div className="nav-avatar">R</div>
+        <div className="nav-avatar">S</div>
         <span className="nav-email">sethiroopansh@gmail.com</span>
       </div>
     </nav>
