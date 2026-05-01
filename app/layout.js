@@ -16,11 +16,11 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
-      <body style={{ backgroundColor: "#111122", minHeight: "100vh" }}>
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body>
         <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
           <Nav />
-          <main className="page-bg" style={{ flex: 1, overflowY: "auto", color: "#e8eaf0" }}>
+          <main className="page-bg" style={{ flex: 1, overflowY: "auto" }}>
             {children}
           </main>
         </div>

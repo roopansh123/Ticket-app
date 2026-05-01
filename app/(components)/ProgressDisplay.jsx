@@ -2,17 +2,32 @@ import React from "react";
 
 const ProgressDisplay = ({ progress }) => {
   return (
-    <div style={{ width: "100%", height: 3, borderRadius: 3, background: "rgba(255,255,255,0.06)", overflow: "hidden" }}>
-      <div
-        style={{
+    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+      <div style={{
+        flex: 1,
+        height: 4,
+        borderRadius: 4,
+        background: "#e2e5ef",
+        overflow: "hidden",
+      }}>
+        <div style={{
           width: `${progress}%`,
           height: "100%",
-          borderRadius: 3,
-          background: "linear-gradient(90deg, #8b5cf6, #a78bfa)",
-          boxShadow: progress > 0 ? "0 0 8px rgba(139,92,246,0.7)" : "none",
+          borderRadius: 4,
+          background: "linear-gradient(90deg, #6366f1, #14b8a6)",
           transition: "width 0.5s ease",
-        }}
-      />
+        }} />
+      </div>
+      <span style={{
+        fontSize: "0.68rem",
+        fontWeight: 600,
+        color: "#64748b",
+        minWidth: 28,
+        textAlign: "right",
+        fontVariantNumeric: "tabular-nums",
+      }}>
+        {progress}%
+      </span>
     </div>
   );
 };

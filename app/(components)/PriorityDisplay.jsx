@@ -1,21 +1,26 @@
-import { faFire } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
+
+const COLORS = ["#6366f1", "#0ea5e9", "#f59e0b", "#f97316", "#ef4444"];
 
 const PriorityDisplay = ({ priority }) => {
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
-      {[1, 2, 3, 4, 5].map((level) => (
-        <FontAwesomeIcon
-          key={level}
-          icon={faFire}
-          style={{
-            fontSize: "0.72rem",
-            color: priority >= level ? "#f97316" : "#252548",
-            filter: priority >= level ? "drop-shadow(0 0 5px rgba(249,115,22,0.75))" : "none",
-          }}
-        />
-      ))}
+    <div style={{ display: "flex", alignItems: "flex-end", gap: 3 }}>
+      {[1, 2, 3, 4, 5].map((level) => {
+        const active = priority >= level;
+        return (
+          <div
+            key={level}
+            style={{
+              width: 5,
+              height: 6 + level * 3,
+              borderRadius: 2,
+              background: active ? COLORS[level - 1] : "#d5d9e6",
+              boxShadow: active ? `0 0 6px ${COLORS[level - 1]}44` : "none",
+              transition: "background 0.2s",
+            }}
+          />
+        );
+      })}
     </div>
   );
 };

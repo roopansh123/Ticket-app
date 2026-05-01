@@ -1,10 +1,5 @@
 import mongoose, { Schema } from "mongoose";
 
-console.log(process.env.MONGODB_URI);
-mongoose.connect(process.env.MONGODB_URI);
-
-mongoose.Promise = global.Promise;
-
 const ticketSchema = new Schema(
   {
     title: String,
@@ -15,12 +10,10 @@ const ticketSchema = new Schema(
     status: String,
     active: Boolean,
   },
-  {
-    timestamps: true,
-  },
+  { timestamps: true }
 );
 
-const Ticket =
-  mongoose.models.Ticket || mongoose.model("Tickets", ticketSchema);
+// Guard key must match the registered model name ("Tickets")
+const Ticket = mongoose.models.Tickets || mongoose.model("Tickets", ticketSchema);
 
 export default Ticket;

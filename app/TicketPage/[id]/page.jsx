@@ -1,13 +1,6 @@
 import TicketForm from "@/app/(components)/TicketForm";
+import { getTicketById } from "@/app/lib/tickets";
 import React from "react";
-
-const getTicketById = async (id) => {
-  const res = await fetch(`http://localhost:3000/api/Tickets/${id}`, {
-    cache: "no-store",
-  });
-  if (!res.ok) throw new Error("Failed to get ticket");
-  return res.json();
-};
 
 const TicketPage = async ({ params }) => {
   const { id } = await params;
@@ -16,8 +9,11 @@ const TicketPage = async ({ params }) => {
   let updateTicketData = { _id: "new" };
 
   if (EDITMODE) {
-    const data = await getTicketById(id);
-    updateTicketData = data.foundTicket;
+    try {
+      updateTicketData = await getTicketById(id);
+    } catch (error) {
+      console.error("Failed to get ticket", error);
+    }
   }
 
   return <TicketForm ticket={updateTicketData} />;

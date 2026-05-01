@@ -1,80 +1,83 @@
 import React from "react";
 import TicketCard from "./(components)/TicketCard";
-
-const getTicket = async () => {
-  try {
-    const res = await fetch("http://localhost:3000/api/Tickets", {
-      cache: "no-store",
-    });
-    return res.json();
-  } catch (error) {
-    console.log("Failed to get Tickets", error);
-  }
-};
+import { getTickets } from "./lib/tickets";
 
 const Dashboard = async () => {
-  const { tickets } = await getTicket();
+  let tickets = [];
+
+  try {
+    tickets = await getTickets();
+  } catch (error) {
+    console.error("Failed to get Tickets", error);
+  }
+
   const uniqueCategories = [...new Set(tickets?.map(({ category }) => category))];
+
+  const total       = tickets?.length ?? 0;
+  const doneCount   = tickets?.filter((t) => t.status === "done").length ?? 0;
+  const activeCount = tickets?.filter((t) => t.status === "started").length ?? 0;
+  const openCount   = tickets?.filter((t) => t.status === "not started").length ?? 0;
 
   return (
     <div style={{ padding: "44px 48px", maxWidth: 1600, margin: "0 auto" }}>
 
       {/* Header */}
-      <div style={{ marginBottom: 48 }}>
-        <p style={{ fontSize: "0.7rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.13em", color: "#8b5cf6", marginBottom: 10 }}>
-          Overview
-        </p>
-        <h1 style={{ fontSize: "2.1rem", fontWeight: 800, color: "#e8eaf0", marginBottom: 6, letterSpacing: "-0.03em" }}>
-          Dashboard
-        </h1>
-        <p style={{ fontSize: "0.875rem", color: "#4a4a78" }}>
-          {tickets?.length ?? 0} ticket{tickets?.length !== 1 ? "s" : ""} across {uniqueCategories.length} categor{uniqueCategories.length !== 1 ? "ies" : "y"}
+      <div className="page-header">
+        <p className="page-eyebrow">Overview</p>
+        <h1 className="page-title">Dashboard</h1>
+        <p className="page-subtitle">
+          {total} ticket{total !== 1 ? "s" : ""} across{" "}
+          {uniqueCategories.length} categor{uniqueCategories.length !== 1 ? "ies" : "y"}
         </p>
       </div>
 
+      {/* Stats bar */}
+      {total > 0 && (
+        <div className="stats-bar">
+          <div className="stat-chip">
+            <span className="stat-val stat-total">{total}</span>
+            Total
+          </div>
+          <div className="stat-chip">
+            <span className="stat-val stat-done">{doneCount}</span>
+            Done
+          </div>
+          <div className="stat-chip">
+            <span className="stat-val stat-active">{activeCount}</span>
+            In&nbsp;Progress
+          </div>
+          <div className="stat-chip">
+            <span className="stat-val stat-open">{openCount}</span>
+            Not&nbsp;Started
+          </div>
+        </div>
+      )}
+
+      {/* Ticket grid, grouped by category */}
       {tickets && uniqueCategories.length > 0 ? (
-        uniqueCategories.map((uniqueCategory, categoryIndex) => {
-          const categoryTickets = tickets.filter(t => t.category === uniqueCategory);
+        uniqueCategories.map((category, i) => {
+          const categoryTickets = tickets.filter((t) => t.category === category);
           return (
-            <div key={categoryIndex} style={{ marginBottom: 52 }}>
-              {/* Category header */}
-              <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 22 }}>
-                <span style={{ fontSize: "0.7rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.13em", color: "#5a5a8a", whiteSpace: "nowrap" }}>
-                  {uniqueCategory}
-                </span>
-                <div className="divider" />
-                <span style={{
-                  fontSize: "0.72rem", fontWeight: 700,
-                  padding: "3px 11px", borderRadius: 20,
-                  background: "rgba(139,92,246,0.14)",
-                  border: "1px solid rgba(139,92,246,0.28)",
-                  color: "#a78bfa",
-                }}>
-                  {categoryTickets.length}
-                </span>
+            <div key={i} className="category-section">
+              <div className="category-header">
+                <span className="category-label">{category}</span>
+                <div className="category-divider" />
+                <span className="category-count">{categoryTickets.length}</span>
               </div>
 
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(270px, 1fr))", gap: 16 }}>
-                {categoryTickets.map((filteredTicket, index) => (
-                  <TicketCard id={index} key={index} ticket={filteredTicket} />
+              <div className="ticket-grid">
+                {categoryTickets.map((ticket, j) => (
+                  <TicketCard key={j} ticket={ticket} />
                 ))}
               </div>
             </div>
           );
         })
       ) : (
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", paddingTop: 100, paddingBottom: 100, textAlign: "center" }}>
-          <div style={{
-            width: 64, height: 64, borderRadius: 18,
-            background: "rgba(139,92,246,0.1)",
-            border: "1px solid rgba(139,92,246,0.22)",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            fontSize: "1.8rem", marginBottom: 20,
-          }}>
-            🎫
-          </div>
-          <h3 style={{ color: "#e8eaf0", fontWeight: 700, marginBottom: 8 }}>No tickets yet</h3>
-          <p style={{ color: "#4a4a78", fontSize: "0.875rem" }}>Create your first ticket to get started.</p>
+        <div className="empty-state">
+          <div className="empty-icon">🎫</div>
+          <p className="empty-title">No tickets yet</p>
+          <p className="empty-sub">Create your first ticket to get started.</p>
         </div>
       )}
     </div>

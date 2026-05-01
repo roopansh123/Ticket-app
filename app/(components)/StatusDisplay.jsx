@@ -1,36 +1,36 @@
 import React from "react";
 
-const statusConfig = {
+const STATUS = {
   done: {
     label: "Done",
-    dot: "#10b981",
-    bg: "rgba(16,185,129,0.12)",
     color: "#34d399",
+    bg: "rgba(16,185,129,0.1)",
     border: "rgba(16,185,129,0.25)",
+    dot: "#10b981",
   },
   started: {
     label: "In Progress",
-    dot: "#f59e0b",
-    bg: "rgba(245,158,11,0.12)",
     color: "#fbbf24",
+    bg: "rgba(245,158,11,0.1)",
     border: "rgba(245,158,11,0.25)",
+    dot: "#f59e0b",
   },
   "not started": {
     label: "Not Started",
-    dot: "#8b5cf6",
-    bg: "rgba(139,92,246,0.12)",
-    color: "#a78bfa",
-    border: "rgba(139,92,246,0.25)",
+    color: "#93c5fd",
+    bg: "rgba(59,130,246,0.1)",
+    border: "rgba(59,130,246,0.25)",
+    dot: "#3b82f6",
   },
 };
 
 const StatusDisplay = ({ status }) => {
-  const cfg = statusConfig[status?.toLowerCase()] ?? {
-    label: status,
-    dot: "#6b7280",
-    bg: "rgba(107,114,128,0.12)",
-    color: "#9ca3af",
-    border: "rgba(107,114,128,0.25)",
+  const s = STATUS[status?.toLowerCase()] ?? {
+    label: status ?? "Unknown",
+    color: "#94a3b8",
+    bg: "rgba(148,163,184,0.1)",
+    border: "rgba(148,163,184,0.2)",
+    dot: "#64748b",
   };
 
   return (
@@ -38,23 +38,23 @@ const StatusDisplay = ({ status }) => {
       display: "inline-flex",
       alignItems: "center",
       gap: 6,
-      borderRadius: 20,
       padding: "4px 10px",
+      borderRadius: 6,
       fontSize: "0.7rem",
-      fontWeight: 700,
+      fontWeight: 600,
       whiteSpace: "nowrap",
       letterSpacing: "0.02em",
-      background: cfg.bg,
-      color: cfg.color,
-      border: `1px solid ${cfg.border}`,
+      background: s.bg,
+      color: s.color,
+      border: `1px solid ${s.border}`,
     }}>
       <span style={{
-        width: 6, height: 6, borderRadius: "50%",
-        background: cfg.dot,
-        boxShadow: `0 0 6px ${cfg.dot}`,
+        width: 6, height: 6,
+        borderRadius: "50%",
+        background: s.dot,
         flexShrink: 0,
       }} />
-      {cfg.label}
+      {s.label}
     </span>
   );
 };
