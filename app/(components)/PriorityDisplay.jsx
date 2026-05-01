@@ -4,27 +4,18 @@ import React from "react";
 
 const PriorityDisplay = ({ priority }) => {
   return (
-    <div className="flex justify-start align-baseline">
-      <FontAwesomeIcon
-        icon={faFire}
-        className={`pr-1 ${priority > 0 ? "text-red-400" : "text-slate-400"}`}
-      />
-      <FontAwesomeIcon
-        icon={faFire}
-        className={`pr-1 ${priority > 1 ? "text-red-400" : "text-slate-400"}`}
-      />
-      <FontAwesomeIcon
-        icon={faFire}
-        className={`pr-1 ${priority > 2 ? "text-red-400" : "text-slate-400"}`}
-      />
-      <FontAwesomeIcon
-        icon={faFire}
-        className={`pr-1 ${priority > 3 ? "text-red-400" : "text-slate-400"}`}
-      />
-      <FontAwesomeIcon
-        icon={faFire}
-        className={`pr-1 ${priority > 4 ? "text-red-400" : "text-slate-400"}`}
-      />
+    <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+      {[1, 2, 3, 4, 5].map((level) => (
+        <FontAwesomeIcon
+          key={level}
+          icon={faFire}
+          style={{
+            fontSize: "0.72rem",
+            color: priority >= level ? "#f97316" : "#252548",
+            filter: priority >= level ? "drop-shadow(0 0 5px rgba(249,115,22,0.75))" : "none",
+          }}
+        />
+      ))}
     </div>
   );
 };
